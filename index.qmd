@@ -1,0 +1,948 @@
+---
+title: "THE THINKING GENERATION"
+format:
+  html:
+    page-layout: full
+    toc: false
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+library(tidyverse)
+library(plotly)
+library(htmltools)
+
+# Load survey data
+df <- read_csv("data/ai_cognitive_dependence.csv", show_col_types = FALSE)
+
+scale_map <- c(
+  "Strongly Disagree" = 1,
+  "Disagree" = 2,
+  "Neutral" = 3,
+  "Agree" = 4,
+  "Strongly Agree" = 5
+)
+
+# Extract column names
+cols <- names(df)
+```
+
+<!-- ==================== TAB 1: HOME ==================== -->
+::: {#sec-home .page-section .active-section}
+
+```{=html}
+<div class="masthead-strip">
+  <span>Neuroscience &amp; Cognitive Policy Initiative</span>
+  <span>Empirical Monograph • N = 2,613</span>
+  <span>Vol. I — Adolescent Cognition</span>
+</div>
+
+<div class="hero-editorial-grid">
+  <!-- Oversized Luminous Anatomical Brain Watermark -->
+  <div class="hero-brain-watermark" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 760" fill="none">
+      <defs>
+        <radialGradient id="glass-brain-glow" cx="48%" cy="46%" r="50%">
+          <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.58"/>
+          <stop offset="55%" stop-color="#FAF8F4" stop-opacity="0.28"/>
+          <stop offset="100%" stop-color="#E9E4D9" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="ivory-line-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.92"/>
+          <stop offset="60%" stop-color="#FFFFFF" stop-opacity="0.72"/>
+          <stop offset="100%" stop-color="#B69A78" stop-opacity="0.22"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Soft Luminous Glass Aura -->
+      <ellipse cx="535" cy="360" rx="465" ry="325" fill="url(#glass-brain-glow)"/>
+
+      <!-- Delicate Outer Measurement Halo -->
+      <circle cx="535" cy="360" r="340" stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="1" stroke-dasharray="4,8"/>
+      <circle cx="535" cy="360" r="295" stroke="#B69A78" stroke-opacity="0.14" stroke-width="0.8"/>
+
+      <!-- Primary Oversized Cortical Silhouette (Glass Ivory Fill + Crisp White Line Art) -->
+      <path d="M 175,388 C 142,308 168,205 245,146 C 322,86 438,62 568,72 C 698,82 812,138 862,235 C 898,308 882,395 822,452 C 845,492 832,554 772,578 C 708,602 648,568 630,518 C 595,532 565,588 558,645 L 495,645 C 495,558 472,498 422,468 C 338,480 268,452 232,398 C 198,402 182,398 175,388 Z"
+            fill="#FFFFFF" fill-opacity="0.26" stroke="url(#ivory-line-grad)" stroke-width="2.2"/>
+
+      <!-- Secondary Whisper Shadow Contour for Glass Depth -->
+      <path d="M 179,391 C 146,311 172,208 249,149 C 326,89 442,65 572,75 C 702,85 816,141 866,238 C 902,311 886,398 826,455"
+            stroke="#17283D" stroke-opacity="0.07" stroke-width="1.1"/>
+
+      <!-- Corpus Callosum & Limbic Arch (Luminous Glass Layer) -->
+      <path d="M 358,362 C 342,292 398,238 498,232 C 598,228 672,268 688,338 C 645,318 592,272 496,272 C 412,272 378,322 358,362 Z"
+            fill="#FFFFFF" fill-opacity="0.34" stroke="#FFFFFF" stroke-opacity="0.88" stroke-width="1.8"/>
+      <path d="M 385,368 C 425,398 512,402 588,358 C 618,340 605,312 572,328 C 518,356 445,362 385,368 Z"
+            fill="#FFFFFF" fill-opacity="0.22" stroke="#FFFFFF" stroke-opacity="0.75" stroke-width="1.4"/>
+
+      <!-- Intricate Cortical Gyri & Sulci Line Art (Frontal & Prefrontal Lobe) -->
+      <g stroke="#FFFFFF" stroke-opacity="0.78" stroke-width="1.5" stroke-linecap="round">
+        <path d="M 192,332 C 245,315 288,278 322,222 C 345,184 352,135 348,96"/>
+        <path d="M 218,248 C 272,258 318,232 365,178 C 398,140 418,102 425,74"/>
+        <path d="M 268,168 C 312,188 368,175 415,135"/>
+        <path d="M 235,382 C 288,368 325,342 358,308"/>
+        <path d="M 285,432 C 325,402 355,382 398,378"/>
+      </g>
+
+      <!-- Intricate Cortical Gyri & Sulci Line Art (Parietal, Temporal & Occipital Lobes) -->
+      <g stroke="#FFFFFF" stroke-opacity="0.76" stroke-width="1.5" stroke-linecap="round">
+        <path d="M 482,72 C 478,132 502,185 552,222"/>
+        <path d="M 578,78 C 562,142 595,195 658,228 C 712,256 768,248 825,215"/>
+        <path d="M 678,108 C 668,162 708,202 775,212"/>
+        <path d="M 688,288 C 742,278 798,298 852,278"/>
+        <path d="M 665,348 C 728,332 785,362 848,342"/>
+        <path d="M 435,442 C 492,418 565,412 638,438 C 702,460 765,445 812,412"/>
+        <path d="M 465,402 C 522,385 588,388 648,408"/>
+      </g>
+
+      <!-- Delicate Cerebellar Folia (Arbor Vitae Engraving) -->
+      <g stroke="#FFFFFF" stroke-opacity="0.72" stroke-width="1.3" stroke-linecap="round">
+        <path d="M 642,485 C 695,468 768,475 812,512"/>
+        <path d="M 648,508 C 702,492 765,502 805,534"/>
+        <path d="M 658,532 C 708,518 758,528 792,554"/>
+        <path d="M 675,555 C 715,546 748,552 772,568"/>
+      </g>
+
+      <!-- Fine White-Matter Tractography & Neural Filaments -->
+      <g stroke="#B69A78" stroke-opacity="0.16" stroke-width="1" stroke-dasharray="2,4">
+        <path d="M 255,285 Q 415,245 498,325"/>
+        <path d="M 335,175 Q 465,225 515,325"/>
+        <path d="M 525,135 Q 535,245 520,325"/>
+        <path d="M 695,185 Q 595,265 535,325"/>
+        <path d="M 765,325 Q 645,335 535,335"/>
+      </g>
+
+      <!-- Luminous Synaptic Nodes -->
+      <g fill="#FFFFFF" fill-opacity="0.85">
+        <circle cx="255" cy="285" r="3.5"/>
+        <circle cx="335" cy="175" r="3.5"/>
+        <circle cx="525" cy="135" r="3.5"/>
+        <circle cx="695" cy="185" r="3.5"/>
+        <circle cx="765" cy="325" r="3.5"/>
+        <circle cx="518" cy="328" r="4.5"/>
+      </g>
+    </svg>
+  </div>
+
+  <div>
+    <div class="pub-title">THE THINKING GENERATION</div>
+    <div class="pub-subtitle">THE HUMAN BRAIN IN THE AGE OF ARTIFICIAL INTELLIGENCE</div>
+    <h1 class="hero-headline">&ldquo;Are we changing the way an entire generation thinks?&rdquo;</h1>
+    <p class="hero-lead">
+      An investigation into artificial intelligence, adolescent brain development, independent thinking, and the future of human creativity.
+    </p>
+    <div style="margin-top: 2rem;">
+      <a href="#teenage-brain" class="next-sec-btn">Read the Monograph &longrightarrow;</a>
+    </div>
+  </div>
+
+  <div>
+    <div class="hero-art-frame">
+      <!-- Clean, Natural Brain Silhouette with Top/Bottom Non-Clipped Labels -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 410" width="100%" role="img" aria-label="Anatomical Brain Diagram">
+        <rect width="100%" height="100%" fill="#F2EFE9"/>
+
+        <!-- Outer Frame -->
+        <rect x="16" y="16" width="488" height="378" fill="none" stroke="#17283D" stroke-opacity="0.16" stroke-width="0.75"/>
+
+        <!-- Top Plate Header -->
+        <text x="32" y="36" fill="#17283D" font-family="Inter, sans-serif" font-size="7.5" letter-spacing="1.4" font-weight="600">FIG. 01 — HUMAN ENCEPHALON</text>
+        <text x="488" y="36" fill="#B69A78" font-family="Inter, sans-serif" font-size="7.5" letter-spacing="1.4" text-anchor="end">ANATOMICAL PROJECTION</text>
+        <line x1="32" y1="45" x2="488" y2="45" stroke="#17283D" stroke-opacity="0.12" stroke-width="0.75"/>
+
+        <!-- 1. BRAINSTEM (Cleanly Tucked Between Temporal Lobe & Cerebellum) -->
+        <path d="M 256,256
+                 C 252,280 256,304 264,328
+                 L 292,328
+                 C 288,306 288,282 296,262
+                 Z"
+              fill="#DFD8CA" stroke="#17283D" stroke-width="1.4" stroke-linejoin="round"/>
+
+        <!-- 2. CEREBELLUM (Nestled Under the Occipital Lobe) -->
+        <path d="M 300,242
+                 C 334,238 374,244 388,264
+                 C 398,280 386,300 360,306
+                 C 332,312 302,300 294,280
+                 C 290,268 293,252 300,242 Z"
+              fill="#E3DDD0" stroke="#17283D" stroke-width="1.4" stroke-linejoin="round"/>
+        <!-- Clean Cerebellar Folia Striations -->
+        <g stroke="#17283D" stroke-opacity="0.42" stroke-width="0.85" fill="none" stroke-linecap="round">
+          <path d="M 306,258 C 336,254 366,258 384,270"/>
+          <path d="M 300,272 C 334,268 368,272 386,284"/>
+          <path d="M 302,286 C 332,282 362,286 376,296"/>
+        </g>
+
+        <!-- 3. CEREBRUM (Natural Frontal, Parietal, Occipital & Temporal Silhouette) -->
+        <path d="M 114,195
+                 C 108,155 138,112 192,94
+                 C 248,76  316,80  364,110
+                 C 400,132 414,168 404,204
+                 C 396,230 366,242 330,244
+                 C 295,246 262,264 222,264
+                 C 190,264 172,250 178,230
+                 C 150,230 122,218 114,195 Z"
+              fill="#EAE4D8" stroke="#17283D" stroke-width="1.75" stroke-linejoin="round"/>
+
+        <!-- Subtle Prefrontal Executive Highlight -->
+        <path d="M 114,195 C 108,155 138,112 192,94 C 204,132 196,174 178,230 C 150,230 122,218 114,195 Z"
+              fill="#17283D" fill-opacity="0.07"/>
+
+        <!-- 4. CORPUS CALLOSUM (Smooth C-Shaped Central Arch) -->
+        <path d="M 168,192
+                 C 160,164 188,138 238,134
+                 C 286,130 326,148 336,176
+                 C 318,168 288,152 240,154
+                 C 198,156 178,174 168,192 Z"
+              fill="#B69A78" fill-opacity="0.4" stroke="#17283D" stroke-width="1.25" stroke-linejoin="round"/>
+
+        <!-- 5. NATURAL CORTICAL SULCI & GYRI CONTOURS -->
+        <g fill="none" stroke="#17283D" stroke-opacity="0.6" stroke-width="1.1" stroke-linecap="round">
+          <!-- Lateral (Sylvian) Fissure defining the Temporal Lobe -->
+          <path d="M 178,230 C 216,216 258,200 296,184"/>
+          <!-- Central Sulcus -->
+          <path d="M 264,84 C 258,108 248,124 238,134"/>
+          <!-- Frontal Sulci -->
+          <path d="M 126,166 C 152,160 174,146 188,126"/>
+          <path d="M 152,126 C 180,118 212,112 242,116"/>
+          <!-- Parieto-Occipital & Calcarine Sulci -->
+          <path d="M 366,114 C 350,138 336,156 324,168"/>
+          <path d="M 344,204 C 368,200 388,204 402,208"/>
+          <!-- Superior Temporal Sulcus -->
+          <path d="M 196,246 C 232,242 268,230 298,216"/>
+        </g>
+
+        <!-- 6. FOUR WELL-SPACED CALLOUT LABELS (Centered in Top & Bottom Bands — Zero Cutoff) -->
+        <g stroke="#17283D" stroke-width="0.8" stroke-opacity="0.55" fill="none">
+          <!-- Top-Left: Prefrontal Cortex -->
+          <line x1="158" y1="138" x2="158" y2="76"/>
+          <circle cx="158" cy="138" r="2.2" fill="#17283D"/>
+
+          <!-- Top-Right: Parietal & Occipital Cortex -->
+          <line x1="336" y1="118" x2="336" y2="76"/>
+          <circle cx="336" cy="118" r="2.2" fill="#17283D"/>
+
+          <!-- Bottom-Left: Temporal Lobe & Hippocampus -->
+          <line x1="216" y1="242" x2="165" y2="346"/>
+          <circle cx="216" cy="242" r="2.2" fill="#17283D"/>
+
+          <!-- Bottom-Right: Cerebellum & Brainstem -->
+          <line x1="348" y1="286" x2="365" y2="346"/>
+          <circle cx="348" cy="286" r="2.2" fill="#17283D"/>
+        </g>
+
+        <g text-anchor="middle" fill="#17283D">
+          <!-- Top-Left Label (Centered at x = 158) -->
+          <text x="158" y="62" font-family="Cormorant Garamond, Georgia, serif" font-size="13" font-weight="600">Prefrontal Cortex</text>
+          <text x="158" y="72" font-family="Inter, sans-serif" font-size="7" font-weight="500" letter-spacing="0.9" fill="#B69A78">EXECUTIVE REASONING</text>
+
+          <!-- Top-Right Label (Centered at x = 342) -->
+          <text x="342" y="62" font-family="Cormorant Garamond, Georgia, serif" font-size="13" font-weight="600">Parietal &amp; Corpus Callosum</text>
+          <text x="342" y="72" font-family="Inter, sans-serif" font-size="7" font-weight="500" letter-spacing="0.9" fill="#B69A78">CORTICAL INTEGRATION</text>
+
+          <!-- Bottom-Left Label (Centered at x = 165) -->
+          <text x="165" y="362" font-family="Cormorant Garamond, Georgia, serif" font-size="13" font-weight="600">Temporal &amp; Limbic Core</text>
+          <text x="165" y="373" font-family="Inter, sans-serif" font-size="7" font-weight="500" letter-spacing="0.9" fill="#B69A78">MEMORY &amp; RECALL</text>
+
+          <!-- Bottom-Right Label (Centered at x = 365) -->
+          <text x="365" y="362" font-family="Cormorant Garamond, Georgia, serif" font-size="13" font-weight="600">Cerebellum &amp; Brainstem</text>
+          <text x="365" y="373" font-family="Inter, sans-serif" font-size="7" font-weight="500" letter-spacing="0.9" fill="#B69A78">MOTOR &amp; AUTONOMIC</text>
+        </g>
+      </svg>
+      <div class="hero-art-caption">
+        <span>Plate I. Median Sagittal Encephalon</span>
+        <span>Archive No. 2613-BD</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="central-question-block">
+  <span class="eyebrow">Central Research Question</span>
+  <p class="central-question-quote">
+    &ldquo;If machines can think for us, what happens to the minds still learning how to think?&rdquo;
+  </p>
+</div>
+
+<div class="metrics-strip">
+  <div class="metric-cell">
+    <span class="metric-num">2,613</span>
+    <span class="metric-label">University Students Surveyed</span>
+  </div>
+  <div class="metric-cell">
+    <span class="metric-num">781</span>
+    <span class="metric-label">Adolescent Cohort (Age &le; 20)</span>
+  </div>
+  <div class="metric-cell">
+    <span class="metric-num">77.8%</span>
+    <span class="metric-label">Teens Reporting Reduced Analysis</span>
+  </div>
+  <div class="metric-cell">
+    <span class="metric-num">3.75 <span style="font-size: 1.3rem; font-weight: 400; color: #B69A78;">/ 5.0</span></span>
+    <span class="metric-label">Prefrontal Offloading Index</span>
+  </div>
+</div>
+
+<div class="editorial-split">
+  <div>
+    <span class="eyebrow">01 / The Premise</span>
+    <h2 class="editorial-split-title">Why AI&rsquo;s Influence on Teenagers Matters</h2>
+  </div>
+  <div>
+    <p style="margin-top: 0;">
+      For the first time in human history, a generation is navigating the critical window of adolescent brain maturation alongside synthetic intelligence capable of generating essays, solving quantitative proofs, and synthesizing arguments on command.
+    </p>
+    <p style="margin-bottom: 0;">
+      Unlike adults whose prefrontal executive networks are already consolidated, teenagers (ages 13 to 22) are undergoing rapid <strong>synaptic pruning</strong> and <strong>myelination</strong>. The cognitive operations a teenager practices daily become biologically wired into durable neural architecture; the operations outsourced to generative algorithms risk remaining underdeveloped.
+    </p>
+  </div>
+</div>
+
+<div class="editorial-3col">
+  <div class="editorial-col">
+    <span class="col-num">I.</span>
+    <h3>The Developmental Window</h3>
+    <p>Adolescence is the brain&rsquo;s second major phase of structural reorganization. Executive circuits in the prefrontal cortex mature last, making teenage reasoning uniquely sensitive to environmental shortcuts.</p>
+  </div>
+  <div class="editorial-col">
+    <span class="col-num">II.</span>
+    <h3>Cognitive Offloading</h3>
+    <p>When students delegate hypothesis generation and structural writing to generative models, they bypass the productive cognitive friction required to encode long-term memory and analytical endurance.</p>
+  </div>
+  <div class="editorial-col">
+    <span class="col-num">III.</span>
+    <h3>Empirical Evidence</h3>
+    <p>Across 2,613 surveyed students—including 781 older teenagers—three-quarters explicitly report that generative AI reduces their need to think deeply and diminishes independent problem-solving.</p>
+  </div>
+</div>
+
+<div class="section-QuickNav">
+  <span class="eyebrow" style="margin: 0;">Section 01 of 05 — Introduction</span>
+  <a href="#teenage-brain" class="next-sec-btn">Continue to The Teenage Brain &longrightarrow;</a>
+</div>
+```
+
+:::
+
+<!-- ==================== TAB 2: THE TEENAGE BRAIN ==================== -->
+::: {#sec-teenage-brain .page-section}
+
+```{=html}
+<div class="editorial-section-header">
+  <span class="eyebrow">Section 02 — Developmental Neuroscience</span>
+  <h2>The Teenage Brain</h2>
+  <p class="deck">
+    Brain development, neuroplasticity, memory consolidation, attentional control, and executive cognition during the adolescent remodeling window.
+  </p>
+</div>
+
+<div class="editorial-split">
+  <div>
+    <span class="eyebrow">I. Structural Maturation</span>
+    <h3 class="editorial-split-title">An Architecture Under Construction</h3>
+  </div>
+  <div>
+    <p style="margin-top: 0;">
+      Neuroimaging longitudinal studies demonstrate that cortical development proceeds from posterior sensory cortices toward anterior executive regions. While limbic reward structures reach heightened sensitivity in early adolescence, the <strong>Prefrontal Cortex</strong>—governing abstract reasoning, impulse inhibition, and long-range planning—continues restructuring into the mid-twenties.
+    </p>
+    <p style="margin-bottom: 0;">
+      Two biological mechanisms govern this transition: <strong>synaptic pruning</strong> (the selective elimination of underutilized neural connections) and <strong>myelination</strong> (the insulation of frequently engaged axonal pathways to accelerate signal transmission).
+    </p>
+  </div>
+</div>
+
+<div class="editorial-4col">
+  <div class="editorial-col">
+    <span class="col-num">01 / Plasticity</span>
+    <h3>Neuroplasticity</h3>
+    <p>Through activity-dependent plasticity, neural circuits that are repeatedly challenged grow denser synaptic arborization. Routine reliance on external AI synthesis alters which cognitive pathways receive daily reinforcement.</p>
+  </div>
+  <div class="editorial-col">
+    <span class="col-num">02 / Memory</span>
+    <h3>Hippocampal Encoding</h3>
+    <p>Durable declarative memory requires active retrieval and semantic elaboration. Passively skimming machine-generated summaries bypasses the deep hippocampal encoding necessary for long-term retention.</p>
+  </div>
+  <div class="editorial-col">
+    <span class="col-num">03 / Attention</span>
+    <h3>Conflict Monitoring</h3>
+    <p>Sustained attention and epistemic vigilance depend on the Anterior Cingulate Cortex. Instantaneous algorithmic answers condition the adolescent brain toward rapid closure rather than sustained inquiry.</p>
+  </div>
+  <div class="editorial-col">
+    <span class="col-num">04 / Cognition</span>
+    <h3>Executive Synthesis</h3>
+    <p>Higher-order cognition demands holding competing premises in working memory. Outsourcing first-draft reasoning deprives the prefrontal cortex of the cognitive load that builds intellectual stamina.</p>
+  </div>
+</div>
+
+<div style="margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid var(--navy);">
+  <span class="eyebrow">II. Interactive Functional Atlas</span>
+  <h3 style="font-size: 2.1rem; margin: 0 0 0.5rem 0;">Five Cortical &amp; Subcortical Systems Mapped to Survey Data</h3>
+  <p style="font-size: 0.94rem; color: var(--charcoal); max-width: 740px; margin-bottom: 1rem;">
+    Select any anatomical region below—or hover directly over the sagittal plate—to inspect its neurobiological mechanism and empirical Likert distribution across N = 2,613 respondents.
+  </p>
+</div>
+
+<div class="region-nav">
+  <button type="button" class="region-btn active" data-reg="pfc">
+    <span class="dot" style="background-color: #17283D;"></span> Prefrontal Cortex
+  </button>
+  <button type="button" class="region-btn" data-reg="hippocampus">
+    <span class="dot" style="background-color: #767B6D;"></span> Hippocampus
+  </button>
+  <button type="button" class="region-btn" data-reg="acc">
+    <span class="dot" style="background-color: #B69A78;"></span> Anterior Cingulate
+  </button>
+  <button type="button" class="region-btn" data-reg="nac">
+    <span class="dot" style="background-color: #8F7657;"></span> Nucleus Accumbens
+  </button>
+  <button type="button" class="region-btn" data-reg="parietal">
+    <span class="dot" style="background-color: #30343B;"></span> Parietal Cortex
+  </button>
+</div>
+
+<div class="explorer-container">
+  <div class="brain-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
+      <span style="font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: #17283D;">Anatomical Projection — Sagittal View</span>
+      <span style="font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: #B69A78;">Interactive Plate</span>
+    </div>
+
+    <div class="brain-svg-wrapper">
+      <svg class="brain-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 540" role="img" aria-label="Interactive Brain Diagram">
+        <rect width="100%" height="100%" fill="#E9E4D9"/>
+
+        <!-- Top Orientation Header -->
+        <text x="45" y="28" fill="#17283D" font-family="Inter, sans-serif" font-size="8.5" letter-spacing="1.5" font-weight="600">ANTERIOR (FRONT)</text>
+        <text x="715" y="28" fill="#17283D" font-family="Inter, sans-serif" font-size="8.5" letter-spacing="1.5" font-weight="600" text-anchor="end">POSTERIOR (BACK)</text>
+        <line x1="45" y1="36" x2="715" y2="36" stroke="#17283D" stroke-opacity="0.12" stroke-width="0.8"/>
+
+        <!-- Subtle Editorial Coordinate Reference -->
+        <line x1="50" y1="265" x2="710" y2="265" stroke="#17283D" stroke-opacity="0.08" stroke-dasharray="3,5" stroke-width="1"/>
+        <line x1="380" y1="90" x2="380" y2="455" stroke="#17283D" stroke-opacity="0.08" stroke-dasharray="3,5" stroke-width="1"/>
+
+        <!-- Brain Geometry Group (Shifted +22px vertically so top & bottom margins are completely clear for exterior labels) -->
+        <g transform="translate(0, 22)">
+          <!-- Brainstem (Tucked Cleanly Below Center) -->
+          <path d="M 350,336 C 340,354 340,382 348,410 L 354,435 L 388,435 C 386,406 386,376 396,346 Z"
+                fill="#DFD8CA" stroke="#17283D" stroke-opacity="0.55" stroke-width="1.4"/>
+
+          <!-- Cerebellum (Realistic Hindbrain Nestled Under Occipital Lobe) -->
+          <path d="M 412,332 C 455,320 518,326 552,354 C 574,374 574,406 546,424 C 514,444 460,440 424,416 C 404,402 398,376 402,352 Z"
+                fill="#E2DDD2" stroke="#17283D" stroke-opacity="0.55" stroke-width="1.4"/>
+          <g stroke="#17283D" stroke-opacity="0.32" stroke-width="1" fill="none">
+            <path d="M 424,352 C 468,344 518,352 550,372"/>
+            <path d="M 416,372 C 466,364 520,372 556,392"/>
+            <path d="M 418,392 C 466,386 514,394 546,410"/>
+          </g>
+
+          <!-- Outer Cortical Silhouette (Smooth, Natural Frontal, Parietal, Occipital & Temporal Contour) -->
+          <path d="M 125,255
+                   C 115,198 156,112 252,72
+                   C 348,38  468,46  548,96
+                   C 604,132 628,188 614,244
+                   C 602,286 558,318 498,324
+                   C 442,330 392,356 328,356
+                   C 272,356 238,334 244,298
+                   C 192,298 142,284 125,255 Z"
+                fill="#F2EFE9" stroke="#17283D" stroke-width="2" stroke-linejoin="round"/>
+
+          <!-- Occipital Lobe (Posterior Visual Context) -->
+          <path d="M 548,96 C 604,132 628,188 614,244 C 602,286 558,318 498,324 C 482,258 504,174 548,96 Z"
+                fill="#E4DFD3" stroke="#17283D" stroke-opacity="0.35" stroke-width="1.2"/>
+
+          <!-- Corpus Callosum Arch (Central White-Matter Reference) -->
+          <path d="M 248,238 C 234,198 268,162 336,156 C 404,152 458,176 472,216 C 446,206 404,180 338,182 C 280,184 260,212 248,238 Z"
+                fill="#D8D2C5" stroke="#17283D" stroke-opacity="0.5" stroke-width="1.2"/>
+
+          <!-- 1. PREFRONTAL CORTEX (Deep Midnight Navy #17283D) -->
+          <path id="reg-pfc" data-region="pfc" class="brain-region" role="button" tabindex="0" aria-label="Prefrontal Cortex"
+                d="M 125,255 C 115,198 156,112 252,72 C 266,136 254,202 222,254 C 190,286 150,284 125,255 Z"
+                fill="#17283D" fill-opacity="0.88" stroke="#17283D" stroke-width="2"/>
+
+          <!-- 2. PARIETAL CORTEX (Charcoal #30343B) -->
+          <path id="reg-parietal" data-region="parietal" class="brain-region" role="button" tabindex="0" aria-label="Parietal Cortex"
+                d="M 252,72 C 348,38 468,46 548,96 C 518,162 496,216 468,228 C 392,166 312,146 252,72 Z"
+                fill="#30343B" fill-opacity="0.84" stroke="#17283D" stroke-width="2"/>
+
+          <!-- 3. ANTERIOR CINGULATE CORTEX (Soft Taupe #B69A78) -->
+          <path id="reg-acc" data-region="acc" class="brain-region" role="button" tabindex="0" aria-label="Anterior Cingulate Cortex"
+                d="M 248,238 C 222,204 238,144 288,118 C 356,114 404,132 418,162 C 362,152 278,162 248,238 Z"
+                fill="#B69A78" fill-opacity="0.92" stroke="#17283D" stroke-width="2"/>
+
+          <!-- 4. NUCLEUS ACCUMBENS (Warm Bronze-Taupe #8F7657) -->
+          <g id="reg-nac" data-region="nac" class="brain-region" role="button" tabindex="0" aria-label="Nucleus Accumbens">
+            <ellipse cx="268" cy="264" rx="22" ry="16" fill="#8F7657" fill-opacity="0.94" stroke="#17283D" stroke-width="2"/>
+            <circle cx="268" cy="264" r="5.5" fill="#E9E4D9"/>
+          </g>
+
+          <!-- 5. HIPPOCAMPUS (Muted Sage #767B6D) -->
+          <path id="reg-hippocampus" data-region="hippocampus" class="brain-region" role="button" tabindex="0" aria-label="Hippocampus"
+                d="M 296,312 C 342,326 402,316 446,272 C 454,254 432,244 406,262 C 368,282 328,294 296,312 Z"
+                fill="#767B6D" fill-opacity="0.92" stroke="#17283D" stroke-width="2"/>
+        </g>
+
+        <!-- ==================== EXTERIOR CALLOUT LABELS (100% OUTSIDE THE BRAIN) ==================== -->
+        <!-- Leader Lines -->
+        <g stroke="#17283D" stroke-width="0.95" stroke-opacity="0.65" fill="none" pointer-events="none">
+          <!-- Top-Left: Prefrontal Cortex -->
+          <polyline points="190,178 160,96 160,82"/>
+          <circle cx="190" cy="178" r="3" fill="#E9E4D9" stroke="#17283D" stroke-width="1.2"/>
+
+          <!-- Top-Center: Anterior Cingulate -->
+          <polyline points="328,164 365,96 365,82"/>
+          <circle cx="328" cy="164" r="3" fill="#17283D"/>
+
+          <!-- Top-Right: Parietal Cortex -->
+          <polyline points="445,142 575,96 575,82"/>
+          <circle cx="445" cy="142" r="3" fill="#E9E4D9" stroke="#17283D" stroke-width="1.2"/>
+
+          <!-- Bottom-Left: Nucleus Accumbens -->
+          <polyline points="268,286 160,468 160,482"/>
+          <circle cx="268" cy="286" r="3" fill="#17283D"/>
+
+          <!-- Bottom-Center: Hippocampus -->
+          <polyline points="370,326 365,468 365,482"/>
+          <circle cx="370" cy="326" r="3" fill="#17283D"/>
+
+          <!-- Bottom-Right: Occipital & Cerebellum -->
+          <polyline points="512,402 575,468 575,482"/>
+          <circle cx="512" cy="402" r="3" fill="#17283D"/>
+        </g>
+
+        <!-- Exterior Label Text (3 in Top Margin, 3 in Bottom Margin — Zero Overlap) -->
+        <g text-anchor="middle" pointer-events="none">
+          <!-- Top Row (y = 60 & 73) -->
+          <text x="160" y="60" fill="#17283D" font-family="Cormorant Garamond, Georgia, serif" font-weight="700" font-size="15">Prefrontal Cortex</text>
+          <text x="160" y="73" fill="#B69A78" font-family="Inter, sans-serif" font-weight="600" font-size="7.5" letter-spacing="1">EXECUTIVE COGNITION</text>
+
+          <text x="365" y="60" fill="#17283D" font-family="Cormorant Garamond, Georgia, serif" font-weight="700" font-size="15">Anterior Cingulate</text>
+          <text x="365" y="73" fill="#B69A78" font-family="Inter, sans-serif" font-weight="600" font-size="7.5" letter-spacing="1">ATTENTION &amp; TRUST</text>
+
+          <text x="575" y="60" fill="#17283D" font-family="Cormorant Garamond, Georgia, serif" font-weight="700" font-size="15">Parietal Cortex</text>
+          <text x="575" y="73" fill="#B69A78" font-family="Inter, sans-serif" font-weight="600" font-size="7.5" letter-spacing="1">TASK EXECUTION</text>
+
+          <!-- Bottom Row (y = 502 & 515) -->
+          <text x="160" y="502" fill="#17283D" font-family="Cormorant Garamond, Georgia, serif" font-weight="700" font-size="15">Nucleus Accumbens</text>
+          <text x="160" y="515" fill="#8F7657" font-family="Inter, sans-serif" font-weight="600" font-size="7.5" letter-spacing="1">REWARD &amp; DEPENDENCE</text>
+
+          <text x="365" y="502" fill="#17283D" font-family="Cormorant Garamond, Georgia, serif" font-weight="700" font-size="15">Hippocampus</text>
+          <text x="365" y="515" fill="#767B6D" font-family="Inter, sans-serif" font-weight="600" font-size="7.5" letter-spacing="1">MEMORY CONSOLIDATION</text>
+
+          <text x="575" y="502" fill="#30343B" font-family="Cormorant Garamond, Georgia, serif" font-style="italic" font-weight="600" font-size="15">Occipital &amp; Cerebellum</text>
+          <text x="575" y="515" fill="#A6A99B" font-family="Inter, sans-serif" font-weight="600" font-size="7.5" letter-spacing="1">POSTERIOR CORTEX</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="detail-card">
+    <span id="detail-badge" class="region-badge" style="background-color: #17283D;">Critical Thinking</span>
+    <h2 id="detail-title" style="margin: 0; font-size: 2rem; font-weight: 600; color: #17283D;">Prefrontal Cortex</h2>
+
+    <div class="score-display">
+      <span id="detail-score-num" class="score-num" style="color: #17283D;">3.75</span>
+      <div class="score-sub">
+        <div>/ 5.0 Mean Likert Index</div>
+        <div id="detail-high-pct" style="font-weight: 500; color: #B69A78;">67.4% of students score high (&ge; 3.5 / 5)</div>
+      </div>
+    </div>
+
+    <div class="progress-track">
+      <div id="detail-progress-bar" class="progress-bar-fill" style="width: 68.75%; background-color: #17283D;"></div>
+    </div>
+
+    <div class="detail-section">
+      <h4>Cognitive Domain &amp; Functional Role</h4>
+      <p id="detail-domain" style="font-weight: 600; color: #17283D; margin-bottom: 0.25rem;">Critical Thinking</p>
+      <p id="detail-role" style="font-size: 0.88rem; color: #30343B; line-height: 1.6;">Executive function, abstract reasoning, analytical problem-solving, and cognitive effort.</p>
+    </div>
+
+    <div class="detail-section">
+      <h4>Neurobiological Mechanism</h4>
+      <div id="detail-neuro" class="neuro-box" style="border-left-color: #17283D;">
+        Excessive cognitive offloading to generative AI reduces active prefrontal engagement, diminishing the neural drive for deep analytical synthesis and independent problem solving.
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h4>Empirical Survey Item Breakdown</h4>
+      <div id="detail-questions">
+        <!-- Populated dynamically via brain_explorer.js -->
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h4>Demographic Subgroup Means</h4>
+      <div id="detail-subgroups" class="subgroup-grid">
+        <!-- Populated dynamically via brain_explorer.js -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-QuickNav">
+  <span class="eyebrow" style="margin: 0;">Section 02 of 05 — The Teenage Brain</span>
+  <a href="#ai-thinking" class="next-sec-btn">Continue to AI &amp; Human Thinking &longrightarrow;</a>
+</div>
+```
+
+:::
+
+<!-- ==================== TAB 3: AI & HUMAN THINKING ==================== -->
+::: {#sec-ai-thinking .page-section}
+
+```{=html}
+<div class="editorial-section-header">
+  <span class="eyebrow">Section 03 — Cognitive Psychology &amp; Epistemology</span>
+  <h2>AI &amp; Human Thinking</h2>
+  <p class="deck">
+    An examination of critical thinking, human creativity, independent reasoning, and the emergence of cognitive dependence in academic environments.
+  </p>
+</div>
+
+<div class="editorial-split">
+  <div>
+    <span class="eyebrow">I. The Friction Paradox</span>
+    <h3 class="editorial-split-title">Why Mental Struggle Is Not a Defect</h3>
+  </div>
+  <div>
+    <p style="margin-top: 0;">
+      Modern generative interfaces are engineered to eliminate cognitive friction—delivering polished prose, synthesized literature reviews, and working code within seconds. Yet cognitive science establishes that <strong>desirable difficulty</strong>—the slow, effortful struggle to organize an argument or resolve an ambiguity—is the precise biological stimulus that consolidates human expertise.
+    </p>
+    <p style="margin-bottom: 0;">
+      When an algorithm supplies the synthesis before the student has wrestled with the raw material, the student transitions from an active architect of thought to a passive reviewer of machine output.
+    </p>
+  </div>
+</div>
+
+<div class="editorial-4col">
+  <div class="editorial-col">
+    <span class="col-num">I. Critical Analysis</span>
+    <h3>Critical Thinking</h3>
+    <p>Among surveyed adolescents (age &le; 20), <strong>77.8%</strong> report analyzing problems less deeply when using AI responses, accepting fluent prose as a substitute for rigorous evaluation.</p>
+  </div>
+  <div class="editorial-col">
+    <span class="col-num">II. Divergent Thought</span>
+    <h3>Human Creativity</h3>
+    <p>Large language models sample from high-probability statistical averages. Yet <strong>76.8%</strong> of teenagers state they rely more on AI-generated ideas than their own original divergent thinking.</p>
+  </div>
+  <div class="editorial-col">
+    <span class="col-num">III. Autonomy</span>
+    <h3>Independent Reasoning</h3>
+    <p>Autonomous reasoning requires tolerating uncertainty. In our cohort, <strong>76.3%</strong> acknowledge that AI directly reduces their independent problem-solving effort across coursework.</p>
+  </div>
+  <div class="editorial-col">
+    <span class="col-num">IV. Reliance</span>
+    <h3>Cognitive Dependence</h3>
+    <p>Habitual offloading reshapes baseline confidence: <strong>61.7%</strong> feel uncomfortable completing academic tasks without AI, and <strong>70.6%</strong> rarely verify machine outputs prior to submission.</p>
+  </div>
+</div>
+
+<div class="central-question-block">
+  <span class="eyebrow">Empirical Synthesis</span>
+  <p class="central-question-quote" style="font-size: 1.85rem;">
+    &ldquo;Fluency is not comprehension. When an algorithm eliminates the struggle of drafting an idea, it simultaneously eliminates the neural work of understanding it.&rdquo;
+  </p>
+</div>
+
+<div class="section-QuickNav">
+  <span class="eyebrow" style="margin: 0;">Section 03 of 05 — AI &amp; Human Thinking</span>
+  <a href="#research-data" class="next-sec-btn">Continue to Research &amp; Data &longrightarrow;</a>
+</div>
+```
+
+:::
+
+<!-- ==================== TAB 4: RESEARCH & DATA ==================== -->
+::: {#sec-research-data .page-section}
+
+```{=html}
+<div class="editorial-section-header">
+  <span class="eyebrow">Section 04 — Empirical Findings &amp; Statistical Evidence</span>
+  <h2>Research &amp; Data</h2>
+  <p class="deck">
+    Quantitative analysis of N = 2,613 university respondents (including n = 781 adolescents aged &le; 20) across 25 psychometric Likert items mapped to five functional neural domains.
+  </p>
+</div>
+```
+
+::: {.chart-editorial-frame}
+<span class="eyebrow">Exhibit 01 — Cross-System Psychometric Means</span>
+<h3 style="margin-top: 0; font-size: 1.75rem;">Mean Offloading &amp; Dependence Scores Across Five Neural Domains</h3>
+<p style="font-size: 0.9rem; color: #30343B; margin-bottom: 1rem;">
+Every functional domain exceeds 3.50 on a 5-point Likert scale, led by Parietal task execution (3.80) and Prefrontal critical-thinking reduction (3.75).
+</p>
+
+```{r}
+#| label: region-comparison-plot
+#| fig-height: 4.5
+
+regions_summary <- tibble(
+  Region = c("Parietal Cortex", "Hippocampus", "Prefrontal Cortex", "Anterior Cingulate", "Nucleus Accumbens"),
+  Cognitive_Domain = c("AI Usage", "Academic Decisions", "Critical Thinking", "Trust & Verification", "Cognitive Dependence"),
+  Prefix = c("AI Usage", "Academic Decision-Making", "Critical Thinking", "Trust in AI", "Cognitive Dependence"),
+  Color = c("#17283D", "#767B6D", "#30343B", "#B69A78", "#8F7657")
+) |>
+  rowwise() |>
+  mutate(
+    q_cols = list(cols[str_starts(cols, fixed(Prefix))]),
+    matrix_vals = list(as.matrix(mutate(select(df, all_of(q_cols)), across(everything(), \(x) scale_map[x])))),
+    mean_score = round(mean(rowMeans(matrix_vals, na.rm = TRUE)), 2),
+    pct_agree = round(100 * mean(rowMeans(matrix_vals, na.rm = TRUE) >= 3.5), 1)
+  ) |>
+  ungroup() |>
+  arrange(mean_score)
+
+p <- plot_ly(
+  data = regions_summary,
+  x = ~mean_score,
+  y = ~reorder(Region, mean_score),
+  type = "bar",
+  orientation = "h",
+  marker = list(
+    color = ~Color,
+    line = list(color = "#17283D", width = 0.5)
+  ),
+  text = ~paste0(mean_score, " / 5.0  (", pct_agree, "% high)"),
+  textposition = "outside",
+  hoverinfo = "text",
+  hovertext = ~paste0(
+    "<b>", Region, "</b><br>",
+    "Construct: ", Cognitive_Domain, "<br>",
+    "Mean Index: ", mean_score, " / 5.0<br>",
+    "High Offloading Share: ", pct_agree, "%"
+  )
+) |>
+  layout(
+    xaxis = list(
+      title = list(text = "Mean Likert Score (1.0 = Strongly Disagree, 5.0 = Strongly Agree)", font = list(size = 11)),
+      range = c(1, 5.4),
+      tickvals = 1:5,
+      ticktext = c("1.0", "2.0", "3.0", "4.0", "5.0"),
+      color = "#30343B",
+      gridcolor = "rgba(23, 40, 61, 0.1)"
+    ),
+    yaxis = list(title = "", color = "#17283D", tickfont = list(family = "Cormorant Garamond, Georgia, serif", size = 15)),
+    hoverlabel = list(bgcolor = "#17283D", bordercolor = "#17283D", font = list(family = "Inter, sans-serif", size = 12, color = "#E9E4D9")),
+    margin = list(l = 160, r = 65, t = 15, b = 45),
+    paper_bgcolor = "rgba(0,0,0,0)",
+    plot_bgcolor = "rgba(0,0,0,0)",
+    font = list(family = "Inter, -apple-system, sans-serif", size = 12, color = "#30343B")
+  ) |>
+  config(displayModeBar = FALSE)
+
+p
+```
+:::
+
+::: {.chart-editorial-frame}
+<span class="eyebrow">Exhibit 02 — Individual Respondent Distribution (N = 2,613)</span>
+<h3 style="margin-top: 0; font-size: 1.75rem;">Prefrontal Critical-Thinking Reduction vs. Subcortical Cognitive Dependence</h3>
+<p style="font-size: 0.9rem; color: #30343B; margin-bottom: 1rem;">
+Each point represents an individual student profile. Higher Prefrontal offloading strongly co-varies with heightened Nucleus Accumbens dependence across both undergraduate and postgraduate cohorts.
+</p>
+
+```{r}
+#| label: scans-scatter-plot
+#| fig-height: 5.4
+
+pfc_cols <- cols[str_starts(cols, "Critical Thinking")]
+nac_cols <- cols[str_starts(cols, "Cognitive Dependence")]
+hippo_cols <- cols[str_starts(cols, "Academic Decision-Making")]
+acc_cols <- cols[str_starts(cols, "Trust in AI")]
+parietal_cols <- cols[str_starts(cols, "AI Usage")]
+
+set.seed(42)
+
+df_scans <- df |>
+  mutate(across(c(all_of(pfc_cols), all_of(nac_cols), all_of(hippo_cols), all_of(acc_cols), all_of(parietal_cols)), \(x) scale_map[x])) |>
+  mutate(
+    scan_id = paste0("Respondent #", row_number()),
+    pfc = round(rowMeans(across(all_of(pfc_cols)), na.rm = TRUE), 2),
+    nac = round(rowMeans(across(all_of(nac_cols)), na.rm = TRUE), 2),
+    hippo = round(rowMeans(across(all_of(hippo_cols)), na.rm = TRUE), 2),
+    acc = round(rowMeans(across(all_of(acc_cols)), na.rm = TRUE), 2),
+    parietal = round(rowMeans(across(all_of(parietal_cols)), na.rm = TRUE), 2),
+    pfc_jitter = round(pfc + runif(n(), -0.05, 0.05), 3),
+    nac_jitter = round(nac + runif(n(), -0.05, 0.05), 3),
+    hover_label = paste0(
+      "<b>", scan_id, "</b> • ", `Department/Discipline`, "<br>",
+      "<b>Cohort:</b> ", `Academic Level`, " (", Gender, ", Age ", Age, ")<br>",
+      "<b>Institution:</b> ", `University Type`, "<br>",
+      "────────────────────────────<br>",
+      "Prefrontal (Critical Thinking): ", pfc, " / 5.0<br>",
+      "Nucleus Accumbens (Dependence): ", nac, " / 5.0<br>",
+      "Hippocampus (Planning): ", hippo, " / 5.0<br>",
+      "Anterior Cingulate (Verification): ", acc, " / 5.0<br>",
+      "Parietal (Task Execution): ", parietal, " / 5.0"
+    )
+  )
+
+p_scatter <- plot_ly(
+  data = df_scans,
+  x = ~pfc_jitter,
+  y = ~nac_jitter,
+  color = ~`Academic Level`,
+  colors = c("Undergraduate" = "#17283D", "Postgraduate" = "#B69A78"),
+  type = "scatter",
+  mode = "markers",
+  marker = list(
+    size = 6,
+    opacity = 0.65,
+    line = list(width = 0.4, color = "#F2EFE9")
+  ),
+  hoverinfo = "text",
+  text = ~hover_label
+) |>
+  layout(
+    xaxis = list(
+      title = "Prefrontal Cortex Index (Reduced Critical Thinking)",
+      color = "#30343B",
+      gridcolor = "rgba(23, 40, 61, 0.12)",
+      zerolinecolor = "rgba(23, 40, 61, 0.2)",
+      range = c(0.8, 5.2)
+    ),
+    yaxis = list(
+      title = "Nucleus Accumbens Index (Cognitive Dependence)",
+      color = "#30343B",
+      gridcolor = "rgba(23, 40, 61, 0.12)",
+      zerolinecolor = "rgba(23, 40, 61, 0.2)",
+      range = c(0.8, 5.2)
+    ),
+    legend = list(
+      title = list(text = "<b>Academic Cohort</b>", font = list(color = "#17283D", size = 11)),
+      font = list(color = "#30343B", size = 11),
+      bgcolor = "#E9E4D9",
+      bordercolor = "rgba(23, 40, 61, 0.2)",
+      borderwidth = 1
+    ),
+    paper_bgcolor = "rgba(0,0,0,0)",
+    plot_bgcolor = "#E9E4D9",
+    hoverlabel = list(bgcolor = "#17283D", bordercolor = "#17283D", font = list(family = "Inter, sans-serif", size = 12, color = "#E9E4D9")),
+    font = list(family = "Inter, -apple-system, sans-serif", color = "#30343B")
+  ) |>
+  config(displayModeBar = FALSE)
+
+p_scatter
+```
+:::
+
+::: {.chart-editorial-frame}
+<span class="eyebrow">Exhibit 03 — Cohort Composition</span>
+<h3 style="margin-top: 0; font-size: 1.75rem;">Academic Level Distribution Across Surveyed Institutions</h3>
+
+```{r}
+#| label: demographics-plots
+#| fig-height: 3.6
+
+acad_df <- df |>
+  count(`Academic Level`, name = "count") |>
+  mutate(pct = round(count / sum(count) * 100, 1))
+
+p_demog <- plot_ly(
+  data = acad_df,
+  labels = ~`Academic Level`,
+  values = ~count,
+  type = "pie",
+  hole = 0.55,
+  marker = list(
+    colors = c("#17283D", "#B69A78"),
+    line = list(color = "#F2EFE9", width = 2)
+  ),
+  textinfo = "label+percent",
+  hoverinfo = "label+value+percent"
+) |>
+  layout(
+    showlegend = TRUE,
+    paper_bgcolor = "rgba(0,0,0,0)",
+    legend = list(font = list(color = "#30343B")),
+    hoverlabel = list(bgcolor = "#17283D", bordercolor = "#17283D", font = list(family = "Inter, sans-serif", size = 12, color = "#E9E4D9")),
+    font = list(family = "Inter, -apple-system, sans-serif", color = "#30343B"),
+    margin = list(t = 20, b = 20, l = 20, r = 20)
+  ) |>
+  config(displayModeBar = FALSE)
+
+p_demog
+```
+:::
+
+```{=html}
+<div class="section-QuickNav">
+  <span class="eyebrow" style="margin: 0;">Section 04 of 05 — Research &amp; Data</span>
+  <a href="#the-future" class="next-sec-btn">Continue to The Future &longrightarrow;</a>
+</div>
+```
+
+:::
+
+<!-- ==================== TAB 5: THE FUTURE ==================== -->
+::: {#sec-the-future .page-section}
+
+```{=html}
+<div class="editorial-section-header">
+  <span class="eyebrow">Section 05 — Long-Term Implications &amp; Educational Policy</span>
+  <h2>The Future</h2>
+  <p class="deck">
+    Long-term neurocognitive trajectories, institutional governance, and a framework for preserving human intellectual sovereignty in an algorithmic century.
+  </p>
+</div>
+
+<div class="editorial-split">
+  <div>
+    <span class="eyebrow">I. The Generational Horizon</span>
+    <h3 class="editorial-split-title">Two Divergent Cognitive Trajectories</h3>
+  </div>
+  <div>
+    <p style="margin-top: 0;">
+      As generative artificial intelligence becomes permanent infrastructure across secondary schools, universities, and research institutions, the emerging generation faces a structural bifurcation. The technology itself is not deterministic; rather, its neurobiological impact depends on <strong>when</strong> in the cognitive workflow it is invoked.
+    </p>
+    <p style="margin-bottom: 0;">
+      Used as a substitute for initial formulation, AI accelerates <em>cognitive atrophy</em>. Used after independent human synthesis as an adversarial interlocutor, AI enables <em>cognitive amplification</em>.
+    </p>
+  </div>
+</div>
+
+<div class="editorial-3col">
+  <div class="editorial-col">
+    <span class="col-num">Trajectory I</span>
+    <h3>Cognitive Atrophy</h3>
+    <p>When adolescents habitually bypass the struggle of outlining arguments, debugging logic, and synthesizing primary sources, prefrontal and hippocampal networks receive diminished developmental stimulation—producing adults dependent on algorithmic scaffolding for complex judgment.</p>
+  </div>
+  <div class="editorial-col">
+    <span class="col-num">Trajectory II</span>
+    <h3>Cognitive Amplification</h3>
+    <p>When students first construct their own mental models and subsequently deploy AI as a Socratic challenger—to stress-test assumptions, surface counterarguments, and refine methodology—neural circuits for executive evaluation are strengthened rather than replaced.</p>
+  </div>
+  <div class="editorial-col">
+    <span class="col-num">Trajectory III</span>
+    <h3>Institutional Stewardship</h3>
+    <p>Universities and secondary schools must redesign assessment around process rather than static product: prioritizing oral defense, unassisted first-draft synthesis, and explicit epistemic verification of machine-generated claims.</p>
+  </div>
+</div>
+
+<div class="central-question-block">
+  <span class="eyebrow">Concluding Thesis</span>
+  <p class="central-question-quote">
+    &ldquo;The measure of an educational civilization in the age of artificial intelligence is not what its machines can produce, but what its young minds remain capable of conceiving alone.&rdquo;
+  </p>
+</div>
+
+<div class="section-QuickNav">
+  <span class="eyebrow" style="margin: 0;">Section 05 of 05 — The Future</span>
+  <a href="#home" class="next-sec-btn">&longleftarrow; Return to Title Page</a>
+</div>
+```
+
+:::
+
+```{r}
+#| label: inline-json
+#| results: asis
+json_content <- readLines("data/brain_data.json", warn = FALSE) |> paste(collapse = "\n")
+cat(paste0("<script>\nwindow.BRAIN_DATA = ", json_content, ";\n</script>"))
+```
+
+<script src="brain_explorer.js"></script>
