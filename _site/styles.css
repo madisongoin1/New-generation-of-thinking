@@ -135,13 +135,15 @@ main.content {
   transform-origin: left center;
 }
 
-.navbar-nav .nav-link.active-tab {
+.navbar-nav .nav-link.active-tab,
+.navbar-nav .nav-link.active {
   color: var(--navy) !important;
   font-weight: 600 !important;
   background: transparent !important;
 }
 
-.navbar-nav .nav-link.active-tab::after {
+.navbar-nav .nav-link.active-tab::after,
+.navbar-nav .nav-link.active::after {
   background-color: var(--navy);
   transform: scaleX(1);
   transform-origin: left center;

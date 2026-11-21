@@ -1,0 +1,31 @@
+---
+title: "About"
+format:
+  html:
+    page-layout: full
+    toc: false
+---
+
+<div style="padding-top: 3.25rem;">
+
+<div class="editorial-section-header">
+  <span class="eyebrow">About This Project</span>
+  <h2>About</h2>
+</div>
+
+## About the Author
+
+Hi! My name is **Madison Goin**, and I am a Neuroscience major at [New College of Florida](https://www.ncf.edu/). I chose this project topic because of my major in neuroscience and my interest in how generative AI adoption shapes adolescent and young-adult brain development and cognition.
+
+- **Email:** [m.goin30@ncf.edu](mailto:m.goin30@ncf.edu)
+- **GitHub:** [madisongoin1](https://github.com/madisongoin1)
+- **Project Repository:** [https://github.com/madisongoin1/New-generation-of-thinking](https://github.com/madisongoin1/New-generation-of-thinking)
+- **Institution:** [New College of Florida](https://www.ncf.edu/)
+
+---
+
+## About the Data
+
+The empirical analysis in this project draws on the [*Dataset on Cognitive Dependence on Generative AI Tools among Bangladeshi University Students*](https://data.mendeley.com/datasets/7m94b7yr8w/2) ([DOI: 10.17632/7m94b7yr8w.2](https://doi.org/10.17632/7m94b7yr8w.2)), published on [Mendeley Data](https://data.mendeley.com/) by Radoanul Arifen, Md. Kazi Musfiqur Rahman, and Suraiya Khandakar. The dataset compiles survey responses from over 2,600 university students across 25 five-point Likert-scale items measuring generative AI usage, critical thinking, academic decision-making, trust and verification habits, and perceived cognitive dependence.
+
+</div>

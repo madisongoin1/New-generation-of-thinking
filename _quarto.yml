@@ -21,6 +21,9 @@ website:
         text: "Research & Data"
       - href: index.qmd#the-future
         text: "The Future"
+    right:
+      - href: about.qmd
+        text: "About"
 
 format:
   html:
